@@ -15,5 +15,22 @@ public class EstadoTrabajo {
 
     private String nombre;
 
+    //Constructor
+    public EstadoTrabajo(){
+
+    }
+    //Getters y Settters
+    public Long getId(){
+        return id;
+    }
+    public void setID(Long id){
+        this.id = id;
+    }
+    public String getNombre(){
+        return nombre;
+    }
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
 
 }
