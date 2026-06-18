@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity //Indica a Hibernate converti en tabla SQL
+@Entity // Clase persistida como tabla SQL
 public class EstadoTrabajo {
     @Id //Marca la PK
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Automatiza la generacion de ID´s en SQL
@@ -19,11 +19,10 @@ public class EstadoTrabajo {
     public EstadoTrabajo(){
 
     }
-    //Getters y Settters
     public Long getId(){
         return id;
     }
-    public void setID(Long id){
+    public void setId(Long id){
         this.id = id;
     }
     public String getNombre(){
