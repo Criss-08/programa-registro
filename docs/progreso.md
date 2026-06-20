@@ -131,7 +131,7 @@ estado_trabajo
 
 EstadoTrabajoRepository
 
-```java
+``` java
 extends JpaRepository<EstadoTrabajo, Long>
 ```
 
@@ -164,10 +164,26 @@ Spring crea e inyecta automáticamente el Repository.
 * Se implemento CommandLineRunner.
 * Se inserto primer registro mediante repository.save().
 * Se verificar persistencia desde PostgreSQL.
+* Proyecto en GitHub
 
 
 
 ---
+
+---
+# Sesión 07 - Service - Inyeccion de Dependencias
+    (Dependency Injection)
+* Se Crea la capa Service
+* Se crea "Controller" que recibe las peticiones HTTP
+* Se realiza la peticion HTTP (GET /estados)
+
+
+
+
+---
+
+
+
 
 # Estado actual del proyecto
 
@@ -178,12 +194,15 @@ Spring crea e inyecta automáticamente el Repository.
 * Hibernate conectado.
 * Tabla estado_trabajo creada.
 * Repository creado.
+* Primer EstadoTrabajo guardado usando Spring Data JPA sin escribir SQL manual.
 
-## Pendiente inmediato
+## Pendiente a seguir
+🔜 Entender la capa Service
+🔜 Diferencia entre Repository y Service
+🔜 Flujo completo Entity → Repository → Service → Controller
 
 
 ---
 
 # Último punto alcanzado
 
-Primer EstadoTrabajo guardado usando Spring Data JPA sin escribir SQL manual.
