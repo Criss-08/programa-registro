@@ -171,38 +171,41 @@ Spring crea e inyecta automáticamente el Repository.
 ---
 
 ---
-# Sesión 07 - Service - Inyeccion de Dependencias
-    (Dependency Injection)
-* Se Crea la capa Service
-* Se crea "Controller" que recibe las peticiones HTTP
-* Se realiza la peticion HTTP (GET /estados)
+# Sesion 7
 
+## Objetivos alcanzados
 
+- Creación de la capa Service.
+- Implementación de EstadoTrabajoService.
+- Comprensión de la inyección de dependencias.
+- Creación de EstadoTrabajoController.
+- Implementación del endpoint GET /estados.
+- Consulta exitosa de datos desde PostgreSQL.
+- Comprensión del flujo:
 
+Cliente
+↓
+Controller
+↓
+Service
+↓
+Repository
+↓
+Hibernate
+↓
+PostgreSQL
 
----
+## Conceptos aprendidos
 
+- Arquitectura en capas.
+- Inyección por constructor.
+- @RestController.
+- @GetMapping.
+- JpaRepository.
+- List<T>.
+- Flujo de una petición HTTP GET.
 
+## Próximo objetivo
 
-
-# Estado actual del proyecto
-
-## Funciona
-
-* Spring Boot inicia correctamente.
-* PostgreSQL conectado.
-* Hibernate conectado.
-* Tabla estado_trabajo creada.
-* Repository creado.
-* Primer EstadoTrabajo guardado usando Spring Data JPA sin escribir SQL manual.
-
-## Pendiente a seguir
-🔜 Entender la capa Service
-🔜 Diferencia entre Repository y Service
-🔜 Flujo completo Entity → Repository → Service → Controller
-
-
----
-
-# Último punto alcanzado
+Implementar POST /estados para crear registros desde HTTP.
 

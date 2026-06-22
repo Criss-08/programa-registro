@@ -14,7 +14,7 @@ public class ProgramaregistroApplication {
 		SpringApplication.run(ProgramaregistroApplication.class, args);
 	}
 
-	@Bean // Registra un objeto en el contenedor de Spring
+/*	@Bean // Registra un objeto en el contenedor de Spring
 	CommandLineRunner init(EstadoTrabajoRepository repository){
 		return args -> {
 			EstadoTrabajo estado = new EstadoTrabajo();
@@ -24,6 +24,10 @@ public class ProgramaregistroApplication {
 
 			System.out.println("Estado guardado correctamente");
 		};
-	}
+	}*/
+
+
+
+
 
 }
