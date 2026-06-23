@@ -195,16 +195,30 @@ Hibernate
 ↓
 PostgreSQL
 
-## Conceptos aprendidos
+# Sesion 8
 
-- Arquitectura en capas.
-- Inyección por constructor.
-- @RestController.
-- @GetMapping.
-- JpaRepository.
-- List<T>.
-- Flujo de una petición HTTP GET.
+## Objetivos alcanzados
 
+- Implementación de GET /estados/{id}.
+- Comprensión de @PathVariable.
+- Comprensión básica de Optional.
+- Implementación de PUT /estados/{id}.
+- Actualización de registros existentes.
+- Implementación de DELETE /estados/{id}.
+- Uso de existsById y deleteById.
+- Prueba completa del CRUD de EstadoTrabajo desde Postman.
+- Verificación de cambios en PostgreSQL.
+
+## Estado actual
+
+La entidad EstadoTrabajo tiene CRUD completo:
+
+- Crear estados.
+- Listar todos los estados.
+- Buscar estado por ID.
+- Actualizar estado por ID.
+- Eliminar estado por ID.
+- 
 ## Próximo objetivo
 
 Implementar POST /estados para crear registros desde HTTP.

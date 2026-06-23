@@ -39,6 +39,7 @@ public class EstadoTrabajoService {
     public boolean eliminar(Long id){
         if (repository.existsById(id)){
             repository.deleteById(id);
+            return true;
         }
         return false;
     }
