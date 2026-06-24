@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity // Clase persistida como tabla SQL
 public class EstadoTrabajo {
@@ -13,6 +14,7 @@ public class EstadoTrabajo {
     private Long id;
     //Long = null(Objeto)
 
+    @NotBlank(message = "El nombre del estado es oblicagotio")
     private String nombre;
 
     //Constructor

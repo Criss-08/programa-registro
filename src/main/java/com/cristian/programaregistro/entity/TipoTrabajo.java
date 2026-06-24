@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class TipoTrabajo {
@@ -12,6 +13,7 @@ public class TipoTrabajo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "El nombre del tipo de trabajo es Obligatorio")
     private String nombre;
 
     public TipoTrabajo(){
