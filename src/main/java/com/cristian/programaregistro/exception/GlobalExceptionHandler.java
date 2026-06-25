@@ -1,4 +1,4 @@
-package exception;
+package com.cristian.programaregistro.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +23,9 @@ public class GlobalExceptionHandler {
         });
 
         Map<String, Object> respuesta = new HashMap<>();
-        respuesta.put("error","validacion");
+        respuesta.put("error","Validacion");
         respuesta.put("mensaje", "Los datos enviados no son validos");
-        respuesta.put("detalle", detalles);
+        respuesta.put("detalles", detalles);
         return new ResponseEntity<>(respuesta, HttpStatus.BAD_REQUEST);
 
 

@@ -350,6 +350,8 @@ CRUD completo con respuestas HTTP profesionales.
 
 CRUD completo con respuestas HTTP profesionales.
 
+
+
 # Sesión 11
 
 ## Objetivos alcanzados
@@ -414,10 +416,119 @@ El proyecto cuenta con dos entidades catálogo funcionales y mejoradas:
 * Validación básica.
 * Manejo claro de errores de validación.
 
+# Sesión 12
+
+## Objetivos alcanzados
+
+* Se realizaron pruebas sobre el manejo global de errores de validación.
+* Se confirmó que las validaciones `@Valid` y `@NotBlank` funcionaban correctamente.
+* Se detectó que Spring devolvía el error genérico por defecto en lugar del JSON personalizado.
+* Se revisó la clase `GlobalExceptionHandler`.
+* Se identificó que la clase estaba fuera del paquete principal de la aplicación.
+* Se movió `GlobalExceptionHandler` al paquete correcto:
+
+```java
+package com.cristian.programaregistro.exception;
+```
+
+* Se confirmó que la clase quedó dentro del árbol principal del proyecto:
+
+```text
+com.cristian.programaregistro
+├── controller
+├── entity
+├── repository
+├── service
+└── exception
+```
+
+## Problema detectado
+
+La clase `GlobalExceptionHandler` tenía lógica correcta, pero Spring Boot no la estaba detectando porque estaba ubicada fuera del paquete principal escaneado por la aplicación.
+
+La aplicación principal se encuentra en:
+
+```java
+package com.cristian.programaregistro;
+```
+
+Spring Boot escanea automáticamente ese paquete y sus subpaquetes.
+
+Por eso, una clase ubicada solamente en:
+
+```java
+package exception;
+```
+
+queda fuera del escaneo automático.
+
+## Solución aplicada
+
+Se movió la clase al paquete:
+
+```java
+com.cristian.programaregistro.exception
+```
+
+Después de reiniciar la aplicación, Spring detectó correctamente `@RestControllerAdvice`.
+
+## Resultado de la prueba
+
+Al enviar un `POST` inválido a:
+
+```http
+POST /tipos-trabajo
+```
+
+con el body:
+
+```json
+{
+  "nombre": ""
+}
+```
+
+la API respondió correctamente con un JSON personalizado:
+
+```json
+{
+  "detalles": {
+    "nombre": "El nombre del tipo de trabajo es Obligatorio"
+  },
+  "mensaje": "Los datos enviados no son validos",
+  "error": "Validacion"
+}
+```
+
+## Conceptos reforzados
+
+* Escaneo automático de componentes en Spring Boot.
+* Importancia de la estructura de paquetes.
+* Diferencia entre package Java y ruta HTTP.
+* `@RestControllerAdvice`.
+* `@ExceptionHandler`.
+* `MethodArgumentNotValidException`.
+* Validaciones con `@Valid` y `@NotBlank`.
+* Respuestas personalizadas para errores `400 Bad Request`.
+* Diagnóstico de errores cuando el código parece correcto pero Spring no lo ejecuta.
+
+## Lección importante
+
+En Spring Boot no alcanza con que una clase esté bien escrita.
+
+También debe estar dentro del paquete principal de la aplicación o dentro de uno de sus subpaquetes para que Spring pueda detectarla automáticamente.
+
+## Estado actual del proyecto
+
+* `EstadoTrabajo` tiene CRUD completo.
+* `TipoTrabajo` tiene CRUD completo.
+* Ambos controllers usan respuestas HTTP profesionales.
+* Ambas entidades tienen validación básica.
+* El manejo global de errores de validación funciona correctamente.
+
 ## Pendientes para la próxima sesión
 
-* Revisar en detalle la clase `GlobalExceptionHandler`.
-* Explicar línea por línea cómo funciona el manejo global de errores.
-* Repasar `Map` y `HashMap` de forma práctica.
-* Confirmar que el commit y push quedaron correctamente realizados.
+* Revisar línea por línea `GlobalExceptionHandler` para entenderlo a fondo.
+* Repasar `Map` y `HashMap`.
+* Mejorar pequeños detalles de formato en los mensajes de error.
 * Luego avanzar con la entidad `Cliente`.
