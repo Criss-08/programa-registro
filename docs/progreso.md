@@ -467,7 +467,7 @@ queda fuera del escaneo automático.
 Se movió la clase al paquete:
 
 ```java
-com.cristian.programaregistro.exception
+com.cristian.programaregistro.exception;
 ```
 
 Después de reiniciar la aplicación, Spring detectó correctamente `@RestControllerAdvice`.
@@ -518,17 +518,121 @@ En Spring Boot no alcanza con que una clase esté bien escrita.
 
 También debe estar dentro del paquete principal de la aplicación o dentro de uno de sus subpaquetes para que Spring pueda detectarla automáticamente.
 
+# Sesión 13
+
+## Objetivos alcanzados
+
+* Se repasó en detalle la clase `GlobalExceptionHandler`.
+* Se comprendió el flujo de errores de validación:
+
+    * `@Valid`
+    * `@NotBlank`
+    * `MethodArgumentNotValidException`
+    * `@RestControllerAdvice`
+    * `@ExceptionHandler`
+    * respuesta personalizada con `ResponseEntity`
+* Se reforzó la diferencia entre errores normales de Spring y errores personalizados por la aplicación.
+* Se comprendió la importancia de que las clases estén dentro del package principal escaneado por Spring Boot.
+
+## Mejora aplicada en manejo de errores
+
+Se reemplazó `HashMap` por `LinkedHashMap` en `GlobalExceptionHandler`.
+
+Motivo:
+
+* `HashMap` no garantiza el orden de los elementos.
+* `LinkedHashMap` mantiene el orden en que se agregan las claves.
+
+Con esto, la respuesta JSON de errores queda más ordenada y predecible:
+
+```json
+{
+  "error": "Validacion",
+  "mensaje": "Los datos enviados no son validos",
+  "detalles": {
+    "nombre": "..."
+  }
+}
+```
+
+## Inicio de entidad Cliente
+
+Se creó la entidad `Cliente`, que representa a odontólogos, consultorios o terceros que envían trabajos al laboratorio.
+
+Campos iniciales:
+
+* `id`
+* `nombre`
+* `email`
+* `telefono`
+* `direccion`
+* `observaciones`
+* `activo`
+
+Validaciones iniciales:
+
+* `nombre` obligatorio con `@NotBlank`
+* `email` con formato válido usando `@Email`
+
+Se confirmó que Hibernate creó correctamente la tabla `cliente` en PostgreSQL.
+
+## Capas creadas para Cliente
+
+Se crearon las siguientes clases:
+
+* `Cliente`
+* `ClienteRepository`
+* `ClienteService`
+
+El `ClienteService` incluye métodos para:
+
+* Obtener todos los clientes.
+* Obtener cliente por ID.
+* Guardar cliente.
+* Actualizar cliente.
+* Eliminar cliente.
+
+## Conceptos reforzados
+
+* Entity con más de dos campos.
+* Validaciones en entidades.
+* `@Email`.
+* Campo `activo` como base para futuro borrado lógico.
+* Repository con `JpaRepository`.
+* Service como capa de lógica.
+* Actualización de múltiples campos dentro de un método `actualizar`.
+* Diferencia entre `clienteExistente` y `clienteActualizado`.
+
 ## Estado actual del proyecto
 
-* `EstadoTrabajo` tiene CRUD completo.
-* `TipoTrabajo` tiene CRUD completo.
-* Ambos controllers usan respuestas HTTP profesionales.
-* Ambas entidades tienen validación básica.
-* El manejo global de errores de validación funciona correctamente.
+Entidades catálogo completas:
+
+* `EstadoTrabajo`
+* `TipoTrabajo`
+
+Entidad de dominio iniciada:
+
+* `Cliente`
+
+Estado de `Cliente`:
+
+* Entity creada.
+* Tabla creada en PostgreSQL.
+* Repository creado.
+* Service creado.
+* Falta Controller.
+* Falta prueba desde Postman.
 
 ## Pendientes para la próxima sesión
 
-* Revisar línea por línea `GlobalExceptionHandler` para entenderlo a fondo.
-* Repasar `Map` y `HashMap`.
-* Mejorar pequeños detalles de formato en los mensajes de error.
-* Luego avanzar con la entidad `Cliente`.
+* Crear `ClienteController`.
+* Implementar endpoints:
+
+    * `GET /clientes`
+    * `GET /clientes/{id}`
+    * `POST /clientes`
+    * `PUT /clientes/{id}`
+    * `DELETE /clientes/{id}`
+* Probar CRUD de Cliente desde Postman.
+* Verificar validaciones de `nombre` y `email`.
+* Confirmar que `GlobalExceptionHandler` responde correctamente ante errores de Cliente.

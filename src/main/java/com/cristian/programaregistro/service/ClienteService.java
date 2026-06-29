@@ -31,7 +31,7 @@ public Cliente guardar(Cliente cliente){
     return repository.save(cliente);
 }
 
-public Optional<Cliente> actulizar (Long id, Cliente clienteActualizado){
+public Optional<Cliente> actulizar (Long id, Cliente clienteActualizado) {
     return repository.findById(id)
             .map(clienteExistente -> {
                 clienteExistente.setNombre(clienteActualizado.getNombre());
@@ -43,9 +43,18 @@ public Optional<Cliente> actulizar (Long id, Cliente clienteActualizado){
 
                 return repository.save(clienteExistente);
             });
-
-
 }
+
+    public boolean eliminar(Long id) {
+    return repository.findById(id)
+            .map(cliente -> {
+                cliente.setActivo(false);
+                repository.save(cliente);
+                return true;
+            })
+            .orElse(false);
+    }
+
 
 
 
