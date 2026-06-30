@@ -19,7 +19,11 @@ public ClienteService(ClienteRepository repository){
 
 
 public List<Cliente> obtenerTodos(){
-    return repository.findAll();
+    return repository.findByActivoTrue();
+}
+
+public List<Cliente> obtenerInactivo(){
+    return repository.findByActivoFalse();
 }
 
 public Optional<Cliente> obtenerPorId(Long id) {
@@ -55,6 +59,13 @@ public Optional<Cliente> actulizar (Long id, Cliente clienteActualizado) {
             .orElse(false);
     }
 
+    public Optional<Cliente> reactivar(Long id) {
+    return repository.findById(id)
+            .map(cliente -> {
+                cliente.setActivo(true);
+                return repository.save(cliente);
+            });
+    }
 
 
 

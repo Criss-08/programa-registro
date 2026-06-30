@@ -623,16 +623,65 @@ Estado de `Cliente`:
 * Falta Controller.
 * Falta prueba desde Postman.
 
+# Sesión 14
+
+## Objetivos alcanzados
+
+* Se creó `ClienteController`.
+* Se implementaron los endpoints REST para `Cliente`.
+* Se probó el CRUD completo desde Postman.
+
+## Endpoints implementados
+
+* `GET /clientes`
+* `GET /clientes/{id}`
+* `POST /clientes`
+* `PUT /clientes/{id}`
+* `DELETE /clientes/{id}`
+
+## Validaciones comprobadas
+
+Se confirmó que las validaciones funcionan correctamente en `Cliente`:
+
+* `@NotBlank` para el campo `nombre`.
+* `@Email` para el campo `email`.
+* `@Valid` en `POST` y `PUT`.
+* `GlobalExceptionHandler` devuelve errores claros cuando los datos no son válidos.
+
+## Borrado lógico
+
+Se modificó el comportamiento de `DELETE /clientes/{id}`.
+
+Antes, el método podía eliminar físicamente el registro.
+
+Ahora, el cliente no se borra de la base de datos. En su lugar, se actualiza:
+
+```java
+activo = false;
+```
+
+Resultado probado:
+
+* `DELETE /clientes/{id}` devuelve `204 No Content`.
+* Luego `GET /clientes/{id}` sigue encontrando el cliente.
+* El cliente aparece con `activo: false`.
+
+Esto permite conservar historial y evitar futuros problemas cuando otras entidades, como `Trabajo`, dependan de `Cliente`.
+
+## Estado actual de Cliente
+
+* Entity creada.
+* Repository creado.
+* Service creado.
+* Controller creado.
+* CRUD completo.
+* Validaciones funcionales.
+* Manejo global de errores funcional.
+* Borrado lógico implementado.
+
 ## Pendientes para la próxima sesión
 
-* Crear `ClienteController`.
-* Implementar endpoints:
-
-    * `GET /clientes`
-    * `GET /clientes/{id}`
-    * `POST /clientes`
-    * `PUT /clientes/{id}`
-    * `DELETE /clientes/{id}`
-* Probar CRUD de Cliente desde Postman.
-* Verificar validaciones de `nombre` y `email`.
-* Confirmar que `GlobalExceptionHandler` responde correctamente ante errores de Cliente.
+* Decidir si `GET /clientes` debe mostrar todos los clientes o solo los activos.
+* Posible creación de endpoint para listar clientes inactivos.
+* Revisar si `PUT` debe permitir modificar el campo `activo`.
+* Luego avanzar con la siguiente entidad del dominio.

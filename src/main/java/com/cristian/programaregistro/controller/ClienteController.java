@@ -32,6 +32,11 @@ public class ClienteController {
         return service.obtenerTodos();
     }
 
+    @GetMapping("/inactivos")
+    public List<Cliente> obtenerInactivos() {
+        return service.obtenerInactivo();
+    }
+
     @GetMapping("/{id}")
     public  ResponseEntity<Cliente> obtenerPorId(@PathVariable Long id) {
         return service.obtenerPorId(id)
@@ -54,6 +59,13 @@ public class ClienteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/{id}/reactivar")
+    public ResponseEntity<Cliente> reactivar(@PathVariable Long id) {
+        return service.reactivar(id)
+                .map(cliente -> ResponseEntity.ok(cliente))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         if (service.eliminar(id)){
@@ -61,4 +73,7 @@ public class ClienteController {
         }
         return ResponseEntity.notFound().build();
     }
+
+
+
 }
