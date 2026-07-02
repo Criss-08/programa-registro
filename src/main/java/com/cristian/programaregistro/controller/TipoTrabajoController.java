@@ -6,11 +6,12 @@ import com.cristian.programaregistro.service.TipoTrabajoService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.Optional;
+
 
 
 
@@ -37,10 +38,10 @@ public class TipoTrabajoController {
     }
 
     @PostMapping
-    public TipoTrabajo guardar(@Valid@RequestBody TipoTrabajo tipoTrabajo){
-        return service.guardar(tipoTrabajo);
+    public ResponseEntity<TipoTrabajo> guardar(@Valid @RequestBody TipoTrabajo tipoTrabajo) {
+        TipoTrabajo tipoTrabajoGuardado = service.guardar(tipoTrabajo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tipoTrabajoGuardado);
     }
-
     @PutMapping("{id}")
     public ResponseEntity<TipoTrabajo> actualizar(
             @PathVariable Long id,

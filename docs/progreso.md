@@ -816,9 +816,285 @@ activo = true;
 * Listado de inactivos.
 * Reactivación de clientes.
 
+# Sesión 16
+
+## Objetivos alcanzados
+
+* Se creó la entidad `Paciente`.
+* Se relacionó `Paciente` con `Cliente`.
+* Se creó `PacienteRepository`.
+* Se creó `PacienteService`.
+* Se creó `PacienteController`.
+* Se implementó CRUD completo para `Paciente`.
+* Se agregaron validaciones básicas.
+* Se implementó borrado lógico.
+* Se implementó reactivación de pacientes.
+* Se agregó listado de pacientes activos.
+* Se agregó listado de pacientes inactivos.
+* Se agregó listado de pacientes por cliente.
+* Se probaron los endpoints desde Postman.
+* Se realizó commit y push del avance.
+
+## Entidad Paciente
+
+La entidad `Paciente` representa a una persona asociada a un cliente/odontólogo/consultorio.
+
+Campos implementados:
+
+* `id`
+* `nombre`
+* `apellido`
+* `observaciones`
+* `activo`
+* `cliente`
+
+Validaciones:
+
+* `nombre` obligatorio con `@NotBlank`.
+* `cliente` obligatorio con `@NotNull`.
+
+## Relación con Cliente
+
+Se implementó la relación:
+
+```text
+Cliente 1 ---- N Paciente
+```
+
+Esto significa:
+
+* Un cliente puede tener muchos pacientes.
+* Un paciente pertenece a un único cliente.
+
+En código se implementó con:
+
+```java
+@ManyToOne
+@JoinColumn(name = "cliente_id", nullable = false)
+private Cliente cliente;
+```
+
+Hibernate creó en la tabla `paciente` una columna `cliente_id`, que funciona como clave foránea hacia la tabla `cliente`.
+
+## PacienteRepository
+
+Se creó `PacienteRepository` extendiendo `JpaRepository`.
+
+Además de los métodos básicos heredados, se agregaron métodos personalizados:
+
+```java
+List<Paciente> findByActivoTrue();
+
+List<Paciente> findByActivoFalse();
+
+List<Paciente> findByClienteIdAndActivoTrue(Long clienteId);
+```
+
+Estos métodos permiten:
+
+* Listar pacientes activos.
+* Listar pacientes inactivos.
+* Listar pacientes activos pertenecientes a un cliente específico.
+
+## PacienteService
+
+Se creó `PacienteService` como capa de lógica.
+
+A diferencia de entidades anteriores, este service usa dos repositories:
+
+* `PacienteRepository`
+* `ClienteRepository`
+
+Esto es necesario porque para guardar o actualizar un paciente primero se verifica que el cliente asociado exista.
+
+Métodos implementados:
+
+* `obtenerTodos()`
+* `obtenerInactivos()`
+* `obtenerPorCliente(Long clienteId)`
+* `obtenerPorId(Long id)`
+* `guardar(Paciente paciente)`
+* `actualizar(Long id, Paciente pacienteActualizado)`
+* `eliminar(Long id)`
+* `reactivar(Long id)`
+
+## Validación de Cliente al guardar Paciente
+
+Para crear un paciente, el JSON debe incluir un cliente existente:
+
+```json
+{
+  "nombre": "Juan",
+  "apellido": "Gomez",
+  "observaciones": "Paciente de prueba",
+  "activo": true,
+  "cliente": {
+    "id": 1
+  }
+}
+```
+
+El service valida que:
+
+* El paciente tenga un cliente.
+* El cliente tenga ID.
+* El cliente exista en la base de datos.
+
+Si el cliente existe, se asocia correctamente al paciente antes de guardar.
+
+## PacienteController
+
+Se creó `PacienteController` con ruta base:
+
+```http
+/pacientes
+```
+
+Endpoints implementados:
+
+```http
+GET /pacientes
+```
+
+Lista pacientes activos.
+
+```http
+GET /pacientes/inactivos
+```
+
+Lista pacientes inactivos.
+
+```http
+GET /pacientes/cliente/{clienteId}
+```
+
+Lista pacientes activos pertenecientes a un cliente específico.
+
+```http
+GET /pacientes/{id}
+```
+
+Busca un paciente por ID.
+
+```http
+POST /pacientes
+```
+
+Crea un paciente.
+
+```http
+PUT /pacientes/{id}
+```
+
+Actualiza un paciente existente.
+
+```http
+DELETE /pacientes/{id}
+```
+
+Aplica borrado lógico, cambiando `activo` a `false`.
+
+```http
+PUT /pacientes/{id}/reactivar
+```
+
+Reactiva un paciente, cambiando `activo` a `true`.
+
+## Borrado lógico
+
+Al igual que con `Cliente`, `Paciente` no se borra físicamente de la base de datos.
+
+Cuando se ejecuta:
+
+```http
+DELETE /pacientes/{id}
+```
+
+el sistema hace:
+
+```java
+activo = false;
+```
+
+Esto permite conservar historial para futuras entidades como `Trabajo`.
+
+## Reactivación
+
+Se agregó la posibilidad de reactivar pacientes dados de baja:
+
+```http
+PUT /pacientes/{id}/reactivar
+```
+
+Esto cambia:
+
+```java
+activo = true;
+```
+
+y el paciente vuelve a aparecer en el listado principal.
+
+## Conceptos nuevos incorporados
+
+* Relación `@ManyToOne`.
+* Uso de `@JoinColumn`.
+* Clave foránea `cliente_id`.
+* Relación entre entidades JPA.
+* Uso de dos repositories dentro de un mismo service.
+* Validación de existencia de una entidad relacionada antes de guardar.
+* Métodos derivados más avanzados de Spring Data JPA.
+* `findByClienteIdAndActivoTrue(Long clienteId)`.
+* Uso de `flatMap` en actualización con relación.
+* CRUD con entidad relacionada.
+* Borrado lógico aplicado a una entidad dependiente.
+
+## Estado actual del proyecto
+
+### EstadoTrabajo
+
+* CRUD completo.
+* Validaciones.
+* Manejo global de errores.
+
+### TipoTrabajo
+
+* CRUD completo.
+* Validaciones.
+* Manejo global de errores.
+
+### Cliente
+
+* CRUD completo.
+* Validaciones.
+* Manejo global de errores.
+* Borrado lógico.
+* Listado de activos.
+* Listado de inactivos.
+* Reactivación.
+
+### Paciente
+
+* Entity creada.
+* Relación con Cliente.
+* Repository creado.
+* Service creado.
+* Controller creado.
+* CRUD completo.
+* Validaciones.
+* Borrado lógico.
+* Listado de activos.
+* Listado de inactivos.
+* Listado por cliente.
+* Reactivación.
+
 ## Pendientes para la próxima sesión
 
-* Revisar rápidamente el estado del repositorio con `git status`.
-* Decidir la próxima entidad.
-* Recomendación: avanzar con `Paciente`, ya que se relaciona naturalmente con `Cliente`.
+* Repasar `Paciente` clase por clase.
+* Entender bien la relación `@ManyToOne`.
+* Repasar `@JoinColumn`.
+* Repasar por qué `PacienteService` necesita `ClienteRepository`.
+* Revisar el flujo completo de creación de paciente.
+* Revisar `flatMap` usado en actualización.
+* Confirmar el estado del repositorio con `git status`.
+* Luego decidir si seguimos con otra entidad o si conviene hacer una pequeña refactorización.
 

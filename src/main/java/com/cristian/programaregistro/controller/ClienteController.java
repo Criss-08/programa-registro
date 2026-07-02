@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -45,8 +46,9 @@ public class ClienteController {
     }
 
     @PostMapping
-    public Cliente guardar(@Valid @RequestBody Cliente cliente) {
-        return service.guardar(cliente);
+    public ResponseEntity<Cliente> guardar(@Valid @RequestBody Cliente cliente) {
+        Cliente clienteGuardado = service.guardar(cliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteGuardado);
     }
 
     @PutMapping("/{id}")

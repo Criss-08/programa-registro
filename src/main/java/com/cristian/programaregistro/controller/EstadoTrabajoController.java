@@ -1,13 +1,13 @@
 package com.cristian.programaregistro.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.cristian.programaregistro.entity.EstadoTrabajo;
 import com.cristian.programaregistro.service.EstadoTrabajoService;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import jakarta.validation.Valid;
 
@@ -26,8 +26,9 @@ public class EstadoTrabajoController {
     }
 
     @PostMapping
-    public EstadoTrabajo guardar(@Valid @RequestBody EstadoTrabajo estado){
-        return service.guardar(estado);
+    public ResponseEntity<EstadoTrabajo> guardar(@Valid @RequestBody EstadoTrabajo estado) {
+        EstadoTrabajo estadoGuardado = service.guardar(estado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(estadoGuardado);
     }
 
     @GetMapping("/{id}")

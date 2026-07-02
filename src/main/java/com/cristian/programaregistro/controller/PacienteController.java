@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -50,9 +51,9 @@ public class PacienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Paciente> guardar (@Valid @RequestBody Paciente paciente) {
+    public ResponseEntity<Paciente> guardar(@Valid @RequestBody Paciente paciente) {
         return service.guardar(paciente)
-                .map(pacienteGuardado -> ResponseEntity.ok(pacienteGuardado))
+                .map(pacienteGuardado -> ResponseEntity.status(HttpStatus.CREATED).body(pacienteGuardado))
                 .orElse(ResponseEntity.notFound().build());
     }
 
