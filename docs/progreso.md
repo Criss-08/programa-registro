@@ -679,9 +679,146 @@ Esto permite conservar historial y evitar futuros problemas cuando otras entidad
 * Manejo global de errores funcional.
 * Borrado lógico implementado.
 
+# Sesión 15
+
+## Objetivos alcanzados
+
+* Se mejoró la lógica de clientes activos e inactivos.
+* Se adaptó el borrado lógico para que sea usable dentro de la API.
+* Se modificó el listado principal de clientes para mostrar solo clientes activos.
+* Se agregó un endpoint para consultar clientes inactivos.
+* Se agregó un endpoint para reactivar clientes dados de baja.
+* Se realizaron pruebas desde Postman.
+* Se confirmó que todo funciona correctamente.
+* Se realizó commit y push de los cambios.
+
+## Cambios implementados
+
+### ClienteRepository
+
+Se agregaron métodos personalizados usando Spring Data JPA:
+
+```java
+List<Cliente> findByActivoTrue();
+
+List<Cliente> findByActivoFalse();
+```
+
+Estos métodos permiten consultar clientes según el valor del campo `activo`.
+
+## ClienteService
+
+Se modificó el método `obtenerTodos()` para devolver solo clientes activos.
+
+También se agregó:
+
+```java
+public List<Cliente> obtenerInactivos()
+```
+
+para listar clientes dados de baja.
+
+Se agregó además:
+
+```java
+public Optional<Cliente> reactivar(Long id)
+```
+
+para volver a activar un cliente existente.
+
+## ClienteController
+
+Se agregaron nuevos endpoints:
+
+```http
+GET /clientes/inactivos
+```
+
+Devuelve clientes con `activo = false`.
+
+```http
+PUT /clientes/{id}/reactivar
+```
+
+Reactiva un cliente, cambiando `activo` a `true`.
+
+## Comportamiento actual de Cliente
+
+```http
+GET /clientes
+```
+
+Devuelve solo clientes activos.
+
+```http
+GET /clientes/inactivos
+```
+
+Devuelve solo clientes inactivos.
+
+```http
+GET /clientes/{id}
+```
+
+Devuelve un cliente por ID, esté activo o inactivo.
+
+```http
+DELETE /clientes/{id}
+```
+
+No elimina físicamente el cliente. Hace borrado lógico:
+
+```java
+activo = false;
+```
+
+```http
+PUT /clientes/{id}/reactivar
+```
+
+Reactiva el cliente:
+
+```java
+activo = true;
+```
+
+## Conceptos reforzados
+
+* Borrado lógico.
+* Listado filtrado por estado.
+* Métodos derivados de Spring Data JPA.
+* Uso de nombres como `findByActivoTrue()` y `findByActivoFalse()`.
+* Reactivación de registros.
+* Diseño de endpoints REST más cercanos a un sistema real.
+* Conservación de historial para futuras relaciones como `Cliente -> Trabajo`.
+
+## Estado actual del proyecto
+
+### EstadoTrabajo
+
+* CRUD completo.
+* Validaciones.
+* Manejo global de errores.
+
+### TipoTrabajo
+
+* CRUD completo.
+* Validaciones.
+* Manejo global de errores.
+
+### Cliente
+
+* CRUD completo.
+* Validaciones.
+* Manejo global de errores.
+* Borrado lógico.
+* Listado de activos.
+* Listado de inactivos.
+* Reactivación de clientes.
+
 ## Pendientes para la próxima sesión
 
-* Decidir si `GET /clientes` debe mostrar todos los clientes o solo los activos.
-* Posible creación de endpoint para listar clientes inactivos.
-* Revisar si `PUT` debe permitir modificar el campo `activo`.
-* Luego avanzar con la siguiente entidad del dominio.
+* Revisar rápidamente el estado del repositorio con `git status`.
+* Decidir la próxima entidad.
+* Recomendación: avanzar con `Paciente`, ya que se relaciona naturalmente con `Cliente`.
+
