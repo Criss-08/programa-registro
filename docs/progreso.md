@@ -1087,14 +1087,59 @@ y el paciente vuelve a aparecer en el listado principal.
 * Listado por cliente.
 * Reactivación.
 
-## Pendientes para la próxima sesión
+# Mejora técnica - Respuestas 201 Created
 
-* Repasar `Paciente` clase por clase.
-* Entender bien la relación `@ManyToOne`.
-* Repasar `@JoinColumn`.
-* Repasar por qué `PacienteService` necesita `ClienteRepository`.
-* Revisar el flujo completo de creación de paciente.
-* Revisar `flatMap` usado en actualización.
-* Confirmar el estado del repositorio con `git status`.
-* Luego decidir si seguimos con otra entidad o si conviene hacer una pequeña refactorización.
+## Objetivo
+
+Se mejoraron las respuestas HTTP de los endpoints `POST`.
+
+Antes, cuando se creaba un recurso correctamente, la API devolvía:
+
+```http
+200 OK
+```
+
+Aunque funcionaba, no era la respuesta más precisa para una creación.
+
+Ahora, los endpoints `POST` devuelven:
+
+```http
+201 Created
+```
+
+Esto indica de forma más correcta que el recurso fue creado exitosamente.
+
+## Endpoints modificados
+
+Se aplicó la mejora en:
+
+```http
+POST /estados
+POST /tipos-trabajo
+POST /clientes
+POST /pacientes
+```
+
+## Comportamiento actual
+
+```text
+POST exitoso       → 201 Created
+POST inválido      → 400 Bad Request
+GET inexistente    → 404 Not Found
+PUT inexistente    → 404 Not Found
+DELETE correcto    → 204 No Content
+```
+
+## Conceptos reforzados
+
+* Uso de `ResponseEntity`.
+* Uso de `HttpStatus.CREATED`.
+* Diferencia entre `200 OK` y `201 Created`.
+* Mejora semántica de respuestas REST.
+* Separación de commits por tipo de cambio.
+
+## Commit realizado
+
+Se realizó commit y push de esta mejora para mantener el historial del proyecto ordenado.
+
 
