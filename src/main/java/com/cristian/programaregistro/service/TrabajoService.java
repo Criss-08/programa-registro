@@ -1,5 +1,6 @@
 package com.cristian.programaregistro.service;
 
+import aj.org.objectweb.asm.Opcodes;
 import com.cristian.programaregistro.entity.Cliente;
 import com.cristian.programaregistro.entity.EstadoTrabajo;
 import com.cristian.programaregistro.entity.Paciente;
@@ -77,10 +78,17 @@ public class TrabajoService {
         if (clienteOptional.isEmpty() || pacienteOptional.isEmpty() || estadoTrabajoOptional.isEmpty()) {
             return Optional.empty();
         }
+        Cliente cliente = clienteOptional.get();
+        Paciente paciente = pacienteOptional.get();
+        EstadoTrabajo estadoTrabajo = estadoTrabajoOptional.get();
 
-        trabajo.setCliente(clienteOptional.get());
-        trabajo.setPaciente(pacienteOptional.get());
-        trabajo.setEstadoTrabajo(estadoTrabajoOptional.get());
+        if (!pacientePerteneceAlCliente(paciente, cliente)) {
+            return Optional.empty();
+        }
+
+        trabajo.setCliente(cliente);
+        trabajo.setPaciente(paciente);
+        trabajo.setEstadoTrabajo(estadoTrabajo);
 
         return Optional.of(trabajoRepository.save(trabajo));
     }
@@ -107,6 +115,14 @@ public class TrabajoService {
             return Optional.empty();
         }
 
+        Cliente cliente = clienteOptional.get();
+        Paciente paciente = pacienteOptional.get();
+        EstadoTrabajo estadoTrabajo = estadoTrabajoOptional.get();
+
+        if (!pacientePerteneceAlCliente(paciente, cliente)) {
+            return Optional.empty();
+        }
+
         Trabajo trabajoExistente = trabajoOptional.get();
 
         trabajoExistente.setDescripcion(trabajoActualizado.getDescripcion());
@@ -116,9 +132,9 @@ public class TrabajoService {
         trabajoExistente.setObservaciones(trabajoActualizado.getObservaciones());
         trabajoExistente.setActivo(trabajoActualizado.getActivo());
 
-        trabajoExistente.setCliente(clienteOptional.get());
-        trabajoExistente.setPaciente(pacienteOptional.get());
-        trabajoExistente.setEstadoTrabajo(estadoTrabajoOptional.get());
+        trabajoExistente.setCliente(cliente);
+        trabajoExistente.setPaciente(paciente);
+        trabajoExistente.setEstadoTrabajo(estadoTrabajo);
 
         return Optional.of(trabajoRepository.save(trabajoExistente));
     }
@@ -141,6 +157,11 @@ public class TrabajoService {
                 });
     }
 
+    private boolean pacientePerteneceAlCliente(Paciente paciente, Cliente cliente) {
+        return paciente.getCliente() != null
+                && paciente.getCliente().getId() != null
+                && paciente.getCliente().getId().equals(cliente.getId());
+    }
 
 
 

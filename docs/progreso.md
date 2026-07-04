@@ -1142,4 +1142,41 @@ DELETE correcto    → 204 No Content
 
 Se realizó commit y push de esta mejora para mantener el historial del proyecto ordenado.
 
+## Sesión 17 - Entidad Trabajo y CRUD funcional
 
+En esta sesión se implementó la entidad central del sistema: `Trabajo`.
+
+### Objetivo de la sesión
+
+Crear la entidad `Trabajo`, conectarla con las entidades ya existentes y probar su funcionamiento completo desde Postman.
+
+La decisión fue avanzar de forma controlada:
+
+1. Primero darle vida a la entidad.
+2. Luego crear repository, service y controller.
+3. Después probar endpoints.
+4. Dejar las reglas de negocio más complejas para una siguiente etapa.
+
+---
+
+### Entidad creada: Trabajo
+
+Se creó la clase:
+
+
+
+## Sesión 18 - Regla de coherencia entre Paciente y Cliente en Trabajo
+
+En esta sesión se avanzó con una mejora pequeña pero importante sobre la entidad `Trabajo`.
+
+### Objetivo
+
+Agregar una regla de negocio para evitar que se pueda crear o actualizar un trabajo con un paciente que no pertenece al cliente indicado.
+
+Ejemplo de inconsistencia que se quiere evitar:
+
+Trabajo:
+cliente = Dr. Pérez
+
+Paciente:
+pertenece a Dra. Gómez
