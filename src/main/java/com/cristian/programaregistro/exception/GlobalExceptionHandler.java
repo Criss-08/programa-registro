@@ -31,6 +31,15 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(ReglaNegocioException.class)
+    public ResponseEntity<Map<String, Object>> manejarReglaNegocio(ReglaNegocioException ex) {
+    Map<String, Object> respuesta = new LinkedHashMap<>();
+    respuesta.put("error", "Regla de negocio");
+    respuesta.put("mensaje", ex.getMessage());
+
+    return new ResponseEntity<>(respuesta, HttpStatus.BAD_REQUEST);
+    }
+
 
 
 

@@ -1,6 +1,6 @@
 package com.cristian.programaregistro.service;
 
-import aj.org.objectweb.asm.Opcodes;
+import com.cristian.programaregistro.exception.ReglaNegocioException;
 import com.cristian.programaregistro.entity.Cliente;
 import com.cristian.programaregistro.entity.EstadoTrabajo;
 import com.cristian.programaregistro.entity.Paciente;
@@ -83,7 +83,7 @@ public class TrabajoService {
         EstadoTrabajo estadoTrabajo = estadoTrabajoOptional.get();
 
         if (!pacientePerteneceAlCliente(paciente, cliente)) {
-            return Optional.empty();
+            throw new ReglaNegocioException("El paciente no pertenece al cliente indicado");
         }
 
         trabajo.setCliente(cliente);
@@ -120,7 +120,7 @@ public class TrabajoService {
         EstadoTrabajo estadoTrabajo = estadoTrabajoOptional.get();
 
         if (!pacientePerteneceAlCliente(paciente, cliente)) {
-            return Optional.empty();
+            throw  new ReglaNegocioException("El paciente no pertenece al cliente indicado");
         }
 
         Trabajo trabajoExistente = trabajoOptional.get();

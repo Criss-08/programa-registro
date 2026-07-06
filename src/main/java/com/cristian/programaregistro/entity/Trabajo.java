@@ -1,7 +1,5 @@
 package com.cristian.programaregistro.entity;
 
-import org.aspectj.bridge.IMessage;
-import org.springframework.context.annotation.Import;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

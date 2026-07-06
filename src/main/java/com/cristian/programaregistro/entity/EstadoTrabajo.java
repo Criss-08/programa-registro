@@ -1,5 +1,5 @@
-
 package com.cristian.programaregistro.entity;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
