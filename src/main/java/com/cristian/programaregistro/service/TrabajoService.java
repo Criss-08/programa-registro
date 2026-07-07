@@ -12,6 +12,7 @@ import com.cristian.programaregistro.repository.TrabajoRepository;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -161,6 +162,10 @@ public class TrabajoService {
         return paciente.getCliente() != null
                 && paciente.getCliente().getId() != null
                 && paciente.getCliente().getId().equals(cliente.getId());
+    }
+
+    public List<Trabajo> obtenerPorFechaIngreso(LocalDate fechaIngreso) {
+        return trabajoRepository.findByFechaIngresoAndActivoTrue(fechaIngreso);
     }
 
 
