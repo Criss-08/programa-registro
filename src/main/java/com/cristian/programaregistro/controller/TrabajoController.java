@@ -64,6 +64,11 @@ public class TrabajoController {
         return service.obtenerPorFechaIngreso(fechaIngreso);
     }
 
+    @GetMapping("/fecha-entrega-estimada/{fechaEntregaEstimada}")
+    public List<Trabajo> obtenePorFechaEntregaEstimada(@PathVariable LocalDate fechaEntregaEstimada) {
+        return service.obtenerPorFechaEntregaEstimada(fechaEntregaEstimada);
+    }
+
     @PostMapping
     public ResponseEntity<Trabajo> guardar(@Valid @RequestBody Trabajo trabajo) {
         return service.guardar(trabajo)
@@ -72,10 +77,9 @@ public class TrabajoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Trabajo> actualizar(
-            @PathVariable Long id,
-            @Valid @RequestBody Trabajo trabajoActualizado
-    ) {
+     public ResponseEntity<Trabajo> actualizar(
+             @PathVariable Long id,
+             @Valid @RequestBody Trabajo trabajoActualizado) {
         return service.actualizar(id, trabajoActualizado)
                 .map(trabajo -> ResponseEntity.ok(trabajo))
                 .orElse(ResponseEntity.notFound().build());

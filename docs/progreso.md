@@ -1180,3 +1180,31 @@ cliente = Dr. Pérez
 
 Paciente:
 pertenece a Dra. Gómez
+
+## Sesión 19 - Filtro de trabajos por fecha de ingreso
+
+En esta sesión se realizó una mejora pequeña y funcional sobre la entidad `Trabajo`.
+
+### Objetivo
+
+Permitir consultar trabajos activos según su fecha de ingreso.
+
+Esto sirve para responder preguntas del sistema como:
+
+```text
+¿Qué trabajos ingresaron hoy?
+¿Qué trabajos se cargaron en una fecha determinada?
+
+## Sesión 20 - Filtro de trabajos por fecha de entrega estimada
+
+En esta sesión se agregó una mejora pequeña y funcional sobre la entidad `Trabajo`.
+
+### Objetivo
+
+Permitir consultar trabajos activos según su fecha estimada de entrega.
+
+Esto sirve para responder preguntas del sistema como:
+
+```text
+¿Qué trabajos tengo estimados para entregar en una fecha determinada?
+¿Qué trabajos debería preparar para tal día?

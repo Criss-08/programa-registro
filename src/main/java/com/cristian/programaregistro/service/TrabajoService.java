@@ -60,6 +60,10 @@ public class TrabajoService {
         return trabajoRepository.findById(id);
     }
 
+    public List<Trabajo> obtenerPorFechaEntregaEstimada(LocalDate fechaDEntregaEstimada) {
+        return trabajoRepository.findByFechaEntregaEstimadaAndActivoTrue(fechaDEntregaEstimada);
+    }
+
     public Optional<Trabajo> guardar(Trabajo trabajo) {
         if (trabajo.getCliente() == null || trabajo.getCliente().getId() == null ||
             trabajo.getPaciente() == null || trabajo.getPaciente().getId() == null ||

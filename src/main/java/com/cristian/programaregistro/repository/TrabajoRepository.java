@@ -20,4 +20,6 @@ public interface TrabajoRepository extends JpaRepository<Trabajo, Long> {
 
     List<Trabajo> findByFechaIngresoAndActivoTrue(LocalDate fechaIngreso);
 
+    List<Trabajo> findByFechaEntregaEstimadaAndActivoTrue(LocalDate fechaEntregaEstimada);
+
 }
