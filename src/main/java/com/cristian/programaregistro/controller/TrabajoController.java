@@ -52,6 +52,11 @@ public class TrabajoController {
         return service.obtenerPorEstado(estadoTrabajoId);
     }
 
+    @GetMapping("/fecha-entrega-real/{fechaEntregaReal}")
+    public List<Trabajo> obtenerPorFechaEntregaReal(@PathVariable LocalDate fechaEntregaReal) {
+        return service.obtenerPorFechaEntregaReal(fechaEntregaReal);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Trabajo> obtenerPorId(@PathVariable Long id) {
         return service.obtenerPorId(id)

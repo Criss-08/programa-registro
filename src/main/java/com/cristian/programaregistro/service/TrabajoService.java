@@ -64,6 +64,10 @@ public class TrabajoService {
         return trabajoRepository.findByFechaEntregaEstimadaAndActivoTrue(fechaDEntregaEstimada);
     }
 
+    public List<Trabajo> obtenerPorFechaEntregaReal(LocalDate fechaEntregaReal) {
+        return trabajoRepository.findByFechaEntregaRealAndActivoTrue(fechaEntregaReal);
+    }
+
     public Optional<Trabajo> guardar(Trabajo trabajo) {
         if (trabajo.getCliente() == null || trabajo.getCliente().getId() == null ||
             trabajo.getPaciente() == null || trabajo.getPaciente().getId() == null ||
