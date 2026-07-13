@@ -1191,7 +1191,7 @@ Permitir consultar trabajos activos según su fecha de ingreso.
 
 Esto sirve para responder preguntas del sistema como:
 
-```text
+
 ¿Qué trabajos ingresaron hoy?
 ¿Qué trabajos se cargaron en una fecha determinada?
 
@@ -1205,6 +1205,15 @@ Permitir consultar trabajos activos según su fecha estimada de entrega.
 
 Esto sirve para responder preguntas del sistema como:
 
-```text
+
 ¿Qué trabajos tengo estimados para entregar en una fecha determinada?
 ¿Qué trabajos debería preparar para tal día?
+
+## Sesión 21 - Revisión de enfoque de aprendizaje
+
+En esta sesión se hizo una pausa para revisar la forma de trabajo del proyecto.
+
+
+
+
+

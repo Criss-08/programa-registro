@@ -67,6 +67,21 @@ public class TrabajoService {
     public List<Trabajo> obtenerPorFechaEntregaReal(LocalDate fechaEntregaReal) {
         return trabajoRepository.findByFechaEntregaRealAndActivoTrue(fechaEntregaReal);
     }
+    private void validarFechas(Trabajo trabajo) {
+        if (trabajo.getFechaIngreso() == null) {
+            return;
+        }
+
+        if (trabajo.getFechaEntregaEstimada() != null
+                && trabajo.getFechaEntregaEstimada().isBefore(trabajo.getFechaIngreso())) {
+            throw new ReglaNegocioException("La fecha de entrega estimada no puede ser anterior a la fecha de ingreso");
+        }
+
+        if (trabajo.getFechaEntregaReal() != null
+                && trabajo.getFechaEntregaReal().isBefore(trabajo.getFechaIngreso())) {
+            throw new ReglaNegocioException("La fecha de entrega real no puede ser anterior a la fecha de ingreso");
+        }
+    }
 
     public Optional<Trabajo> guardar(Trabajo trabajo) {
         if (trabajo.getCliente() == null || trabajo.getCliente().getId() == null ||
@@ -74,6 +89,7 @@ public class TrabajoService {
             trabajo.getEstadoTrabajo() == null || trabajo.getEstadoTrabajo().getId() == null) {
             return Optional.empty();
         }
+        validarFechas(trabajo);
 
         Optional<Cliente> clienteOptional =
                 clienteRepository.findById(trabajo.getCliente().getId());
@@ -110,6 +126,7 @@ public class TrabajoService {
         ) {
             return Optional.empty();
         }
+        validarFechas(trabajoActualizado);
 
         Optional<Trabajo> trabajoOptional = trabajoRepository.findById(id);
         Optional<Cliente> clienteOptional =
