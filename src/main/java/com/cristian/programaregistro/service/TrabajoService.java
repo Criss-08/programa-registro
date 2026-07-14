@@ -67,6 +67,11 @@ public class TrabajoService {
     public List<Trabajo> obtenerPorFechaEntregaReal(LocalDate fechaEntregaReal) {
         return trabajoRepository.findByFechaEntregaRealAndActivoTrue(fechaEntregaReal);
     }
+
+    public List<Trabajo> obtenerProximosAEntregar() {
+        return trabajoRepository.findByActivoTrueAndFechaEntregaEstimadaIsNotNullOrderByFechaEntregaEstimadaAsc();
+    }
+
     private void validarFechas(Trabajo trabajo) {
         if (trabajo.getFechaIngreso() == null) {
             return;

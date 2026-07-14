@@ -57,6 +57,11 @@ public class TrabajoController {
         return service.obtenerPorFechaEntregaReal(fechaEntregaReal);
     }
 
+    @GetMapping("/proximos-entrega")
+    public List<Trabajo> obtenerProximosAEntregar() {
+        return service.obtenerProximosAEntregar();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Trabajo> obtenerPorId(@PathVariable Long id) {
         return service.obtenerPorId(id)

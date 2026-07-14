@@ -1209,10 +1209,24 @@ Esto sirve para responder preguntas del sistema como:
 ¿Qué trabajos tengo estimados para entregar en una fecha determinada?
 ¿Qué trabajos debería preparar para tal día?
 
-## Sesión 21 - Revisión de enfoque de aprendizaje
+## Sesión 21 - Filtro por fecha de entrega real y validaciones de fechas
 
-En esta sesión se hizo una pausa para revisar la forma de trabajo del proyecto.
+En esta sesión se pulieron reglas y consultas relacionadas con la entidad `Trabajo`.
 
+### Objetivo
+
+Mejorar el manejo de fechas de los trabajos, tanto para consultas como para validaciones de negocio.
+
+---
+
+### Filtro agregado
+
+Se agregó un nuevo filtro para consultar trabajos activos por fecha de entrega real.
+
+Endpoint agregado:
+
+```http
+GET /trabajos/fecha-entrega-real/{fechaEntregaReal}
 
 
 
