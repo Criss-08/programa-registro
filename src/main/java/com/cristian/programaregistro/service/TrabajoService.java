@@ -24,6 +24,7 @@ public class TrabajoService {
     private final PacienteRepository pacienteRepository;
     private final EstadoTrabajoRepository estadoTrabajoRepository;
 
+
     public TrabajoService(
             TrabajoRepository trabajoRepository,
             ClienteRepository clienteRepository,
@@ -88,6 +89,16 @@ public class TrabajoService {
         }
     }
 
+    private void validarClienteYPacienteActivos(Cliente cliente, Paciente paciente) {
+        if (!Boolean.TRUE.equals(cliente.getActivo())) {
+            throw new ReglaNegocioException("No se puede asociar un trabajo a un paciente inactivo");
+        }
+
+        if (!Boolean.TRUE.equals(paciente.getActivo())) {
+            throw new ReglaNegocioException("No se puede asociar un trabajo a un paciente inactivo");
+        }
+    }
+
     public Optional<Trabajo> guardar(Trabajo trabajo) {
         if (trabajo.getCliente() == null || trabajo.getCliente().getId() == null ||
             trabajo.getPaciente() == null || trabajo.getPaciente().getId() == null ||
@@ -111,6 +122,7 @@ public class TrabajoService {
         Cliente cliente = clienteOptional.get();
         Paciente paciente = pacienteOptional.get();
         EstadoTrabajo estadoTrabajo = estadoTrabajoOptional.get();
+        validarClienteYPacienteActivos(cliente, paciente);
 
         if (!pacientePerteneceAlCliente(paciente, cliente)) {
             throw new ReglaNegocioException("El paciente no pertenece al cliente indicado");
@@ -149,6 +161,7 @@ public class TrabajoService {
         Cliente cliente = clienteOptional.get();
         Paciente paciente = pacienteOptional.get();
         EstadoTrabajo estadoTrabajo = estadoTrabajoOptional.get();
+        validarClienteYPacienteActivos(cliente,paciente);
 
         if (!pacientePerteneceAlCliente(paciente, cliente)) {
             throw  new ReglaNegocioException("El paciente no pertenece al cliente indicado");

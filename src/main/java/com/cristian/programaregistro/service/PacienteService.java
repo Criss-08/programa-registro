@@ -82,6 +82,7 @@ public class PacienteService {
                 .orElse(false);
     }
 
+
     public Optional<Paciente> reactivar(Long id) {
         return pacienteRepository.findById(id)
                 .map(paciente -> {

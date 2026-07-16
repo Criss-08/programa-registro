@@ -68,6 +68,17 @@ public class PacienteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        boolean eliminado = service.eliminar(id);
+
+        if (!eliminado) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("/{id}/reactivar")
     public ResponseEntity<Paciente> reactivar(@PathVariable Long id) {
         return service.reactivar(id)

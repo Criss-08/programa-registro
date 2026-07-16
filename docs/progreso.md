@@ -1225,8 +1225,20 @@ Se agregó un nuevo filtro para consultar trabajos activos por fecha de entrega 
 
 Endpoint agregado:
 
-```http
 GET /trabajos/fecha-entrega-real/{fechaEntregaReal}
+
+## Sesión 22 - Validación de Cliente y Paciente activos en Trabajo
+
+En esta sesión se repasó el funcionamiento general de `TrabajoService` y se agregó una nueva regla de negocio.
+
+### Objetivo
+
+Evitar que se puedan crear o actualizar trabajos usando un cliente o paciente inactivo.
+
+### Regla agregada
+
+No se puede asociar un trabajo a un cliente inactivo.
+No se puede asociar un trabajo a un paciente inactivo.
 
 
 
