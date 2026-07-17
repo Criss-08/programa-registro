@@ -1227,6 +1227,8 @@ Endpoint agregado:
 
 GET /trabajos/fecha-entrega-real/{fechaEntregaReal}
 
+
+
 ## Sesión 22 - Validación de Cliente y Paciente activos en Trabajo
 
 En esta sesión se repasó el funcionamiento general de `TrabajoService` y se agregó una nueva regla de negocio.
@@ -1241,5 +1243,22 @@ No se puede asociar un trabajo a un cliente inactivo.
 No se puede asociar un trabajo a un paciente inactivo.
 
 
+
+## Sesión 23 - Creación de entidad DetalleTrabajo
+
+En esta sesión se inició el desarrollo de la entidad `DetalleTrabajo`.
+
+### Objetivo
+
+Crear la entidad que representará cada ítem o línea dentro de un trabajo.
+
+`DetalleTrabajo` permite indicar qué tipo de trabajo concreto se realizó, cuántas unidades son, cuál es el precio unitario y cuál será el subtotal.
+
+Ejemplo conceptual:
+
+```text
+Trabajo #10
+├── Zirconio x 2 unidades
+└── Casquete x 1 unidad
 
 

@@ -73,12 +73,12 @@ public class DetalleTrabajo {
         this.precioUnitario = precioUnitario;
     }
 
-    public BigDecimal getSubTotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
-    public void setSubTotal(BigDecimal subTotal) {
-        this.subtotal = subTotal;
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
     }
 
     public String getObservaciones() {
