@@ -116,6 +116,8 @@ public class DetalleTrabajoService {
         detalleTrabajoExistente.setTrabajo(trabajo);
         detalleTrabajoExistente.setTipoTrabajo(tipoTrabajo);
 
+        calcularSubtotal(detalleTrabajoExistente);
+
         return Optional.of(detalleTrabajoRepository.save(detalleTrabajoExistente));
     }
 

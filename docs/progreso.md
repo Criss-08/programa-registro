@@ -1256,9 +1256,28 @@ Crear la entidad que representará cada ítem o línea dentro de un trabajo.
 
 Ejemplo conceptual:
 
-```text
+
 Trabajo #10
 ├── Zirconio x 2 unidades
 └── Casquete x 1 unidad
 
 
+## Sesión 24 - DetalleTrabajo Service and Repository
+
+- DetalleTrabajoRepository
+- DetalleTrabajoService
+- consultas por activo, trabajo y tipo de trabajo
+- validación de Trabajo existente
+- validación de TipoTrabajo existente
+- validación de Trabajo activo
+- cálculo automático de subtotal
+
+## Sesión 25 - DetalleTrabajo controller
+
+- DetalleTrabajoController
+- endpoints CRUD de detalle trabajo
+- POST /detalles-trabajo funcionando
+- PUT /detalles-trabajo/{id} funcionando
+- cálculo automático de subtotal al crear
+- recálculo automático de subtotal al actualizar
+- pruebas en Postman
