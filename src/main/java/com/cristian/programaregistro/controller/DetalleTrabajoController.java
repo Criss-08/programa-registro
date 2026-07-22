@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/detalles-trabajo")
@@ -44,6 +45,13 @@ public class DetalleTrabajoController {
     @GetMapping("/tipo-trabajo/{tipoTrabajoId}")
     public List<DetalleTrabajo> obtenerPorTipoTrabajo(@PathVariable Long tipoTrabajoId) {
         return service.obtenerPorTipoTrabajo(tipoTrabajoId);
+    }
+
+    @GetMapping("/trabajo/{trabajoId}/total")
+    public ResponseEntity<BigDecimal> calcularTotalPorTrabajo(@PathVariable Long trabajoId) {
+        return service.calcularTotalPorTrabajo(trabajoId)
+                .map(total -> ResponseEntity.ok(total))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}")

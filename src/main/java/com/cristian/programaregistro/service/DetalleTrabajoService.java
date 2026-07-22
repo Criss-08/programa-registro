@@ -139,6 +139,22 @@ public class DetalleTrabajoService {
                 });
     }
 
+    public Optional<BigDecimal> calcularTotalPorTrabajo(Long trabajoId) {
+        Optional<Trabajo> trabajoOptional = trabajoRepository.findById(trabajoId);
+
+        if (trabajoOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        BigDecimal total = detalleTrabajoRepository.findByTrabajoIdAndActivoTrue(trabajoId)
+                .stream()
+                .map(DetalleTrabajo::getSubtotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return Optional.of(total);
+    }
+
+
     private void validarTrabajoActivo(Trabajo trabajo) {
         if (!Boolean.TRUE.equals(trabajo.getActivo())) {
             throw new ReglaNegocioException("No se puede asociar un detalle a un trabajo inactivo");
@@ -151,4 +167,5 @@ public class DetalleTrabajoService {
 
         detalleTrabajo.setSubtotal(subtotal);
     }
+
 }
