@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.math.BigDecimal;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/detalles-trabajo")
@@ -48,9 +49,15 @@ public class DetalleTrabajoController {
     }
 
     @GetMapping("/trabajo/{trabajoId}/total")
-    public ResponseEntity<BigDecimal> calcularTotalPorTrabajo(@PathVariable Long trabajoId) {
+    public ResponseEntity<Map<String, Object>> calcularTotalPorTrabajo(@PathVariable Long trabajoId) {
         return service.calcularTotalPorTrabajo(trabajoId)
-                .map(total -> ResponseEntity.ok(total))
+                .map(total -> {
+                    Map<String, Object> respuesta = new LinkedHashMap<>();
+                    respuesta.put("trabajoId", trabajoId);
+                    respuesta.put("total", total);
+
+                    return ResponseEntity.ok(respuesta);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 
