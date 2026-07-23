@@ -15,6 +15,8 @@ public interface DetalleTrabajoRepository extends JpaRepository<DetalleTrabajo, 
 
     List<DetalleTrabajo> findByTipoTrabajoIdAndActivoTrue(Long tipoTrabajoId);
 
+    Long countByTrabajoIdAndActivoTrue(Long trabajoId);
+
 
 
 }

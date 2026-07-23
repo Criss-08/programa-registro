@@ -154,6 +154,18 @@ public class DetalleTrabajoService {
         return Optional.of(total);
     }
 
+    public Optional<Long> contarDetallesPorTrabajo(Long trabajoId) {
+        Optional<Trabajo> trabajoOptional = trabajoRepository.findById(trabajoId);
+
+        if (trabajoOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Long cantidadDetalles = detalleTrabajoRepository.countByTrabajoIdAndActivoTrue(trabajoId);
+
+        return Optional.of(cantidadDetalles);
+    }
+
 
     private void validarTrabajoActivo(Trabajo trabajo) {
         if (!Boolean.TRUE.equals(trabajo.getActivo())) {

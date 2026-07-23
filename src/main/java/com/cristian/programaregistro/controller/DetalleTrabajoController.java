@@ -1,5 +1,7 @@
 package com.cristian.programaregistro.controller;
 
+import com.cristian.programaregistro.dto.TrabajoDetalleResumenResponse;
+import com.cristian.programaregistro.dto.TrabajoTotalResponse;
 import com.cristian.programaregistro.entity.DetalleTrabajo;
 import com.cristian.programaregistro.service.DetalleTrabajoService;
 import jakarta.validation.Valid;
@@ -49,15 +51,22 @@ public class DetalleTrabajoController {
     }
 
     @GetMapping("/trabajo/{trabajoId}/total")
-    public ResponseEntity<Map<String, Object>> calcularTotalPorTrabajo(@PathVariable Long trabajoId) {
+    public ResponseEntity<TrabajoTotalResponse> calcularTotalPorTrabajo(@PathVariable Long trabajoId) {
         return service.calcularTotalPorTrabajo(trabajoId)
-                .map(total -> {
-                    Map<String, Object> respuesta = new LinkedHashMap<>();
-                    respuesta.put("trabajoId", trabajoId);
-                    respuesta.put("total", total);
+                .map(total -> ResponseEntity.ok(new TrabajoTotalResponse(trabajoId, total)))
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-                    return ResponseEntity.ok(respuesta);
-                })
+    @GetMapping("/trabajo/{trabajoId}/resumen")
+    public ResponseEntity<TrabajoDetalleResumenResponse> obtenerResumenPorTrabajo(@PathVariable Long trabajoId) {
+        return service.calcularTotalPorTrabajo(trabajoId)
+                .flatMap(total ->
+                        service.contarDetallesPorTrabajo(trabajoId)
+                                .map(cantidadDetalles ->
+                                        new TrabajoDetalleResumenResponse(trabajoId, cantidadDetalles, total)
+                                )
+                )
+                .map(resumen -> ResponseEntity.ok(resumen))
                 .orElse(ResponseEntity.notFound().build());
     }
 
