@@ -59,13 +59,7 @@ public class DetalleTrabajoController {
 
     @GetMapping("/trabajo/{trabajoId}/resumen")
     public ResponseEntity<TrabajoDetalleResumenResponse> obtenerResumenPorTrabajo(@PathVariable Long trabajoId) {
-        return service.calcularTotalPorTrabajo(trabajoId)
-                .flatMap(total ->
-                        service.contarDetallesPorTrabajo(trabajoId)
-                                .map(cantidadDetalles ->
-                                        new TrabajoDetalleResumenResponse(trabajoId, cantidadDetalles, total)
-                                )
-                )
+        return service.obtenerResumenPorTrabajo(trabajoId)
                 .map(resumen -> ResponseEntity.ok(resumen))
                 .orElse(ResponseEntity.notFound().build());
     }

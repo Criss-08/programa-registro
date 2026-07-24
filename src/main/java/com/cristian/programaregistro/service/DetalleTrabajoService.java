@@ -7,6 +7,7 @@ import com.cristian.programaregistro.exception.ReglaNegocioException;
 import com.cristian.programaregistro.repository.DetalleTrabajoRepository;
 import com.cristian.programaregistro.repository.TipoTrabajoRepository;
 import com.cristian.programaregistro.repository.TrabajoRepository;
+import com.cristian.programaregistro.dto.TrabajoDetalleResumenResponse;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -164,6 +165,26 @@ public class DetalleTrabajoService {
         Long cantidadDetalles = detalleTrabajoRepository.countByTrabajoIdAndActivoTrue(trabajoId);
 
         return Optional.of(cantidadDetalles);
+    }
+
+    public Optional<TrabajoDetalleResumenResponse> obtenerResumenPorTrabajo(Long trabajoId) {
+        Optional<Trabajo> trabajoOptional = trabajoRepository.findById(trabajoId);
+
+        if (trabajoOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Long cantidadDetalles = detalleTrabajoRepository.countByTrabajoIdAndActivoTrue(trabajoId);
+
+        BigDecimal total = detalleTrabajoRepository.findByTrabajoIdAndActivoTrue(trabajoId)
+                .stream()
+                .map(DetalleTrabajo::getSubtotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        TrabajoDetalleResumenResponse resumen =
+                new TrabajoDetalleResumenResponse(trabajoId, cantidadDetalles, total);
+
+        return Optional.of(resumen);
     }
 
 
