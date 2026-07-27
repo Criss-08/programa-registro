@@ -135,7 +135,9 @@ public class DetalleTrabajoService {
     public Optional<DetalleTrabajo> reactivar(Long id) {
         return detalleTrabajoRepository.findById(id)
                 .map(detalleTrabajo -> {
-                    detalleTrabajo.setActivo(true);
+                   validarTrabajoActivo(detalleTrabajo.getTrabajo());
+
+                   detalleTrabajo.setActivo(true);
                     return detalleTrabajoRepository.save(detalleTrabajo);
                 });
     }
