@@ -16,8 +16,12 @@ public class TipoTrabajoService {
         this.repository = repository;
     }
 
-    public List<TipoTrabajo> obtenerTodos(){
-        return repository.findAll();
+    public List<TipoTrabajo> obtenerTodos() {
+        return repository.findByActivoTrue();
+    }
+
+    public List<TipoTrabajo> obtenerInactivos() {
+        return repository.findByActivoFalse();
     }
 
     public Optional<TipoTrabajo> obtenerPorId(Long id){
@@ -33,16 +37,27 @@ public class TipoTrabajoService {
                 .map(tipoTrabajoExistente -> {
                     tipoTrabajoExistente.setNombre(tipoTrabajoActualizado.getNombre());
                     tipoTrabajoExistente.setPrecioBase(tipoTrabajoActualizado.getPrecioBase());
+                    tipoTrabajoExistente.setActivo(tipoTrabajoActualizado.getActivo());
                     return repository.save(tipoTrabajoExistente);
                 });
     }
 
-    public boolean eliminar(Long id){
-        if (repository.existsById(id)){
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
+    public boolean eliminar(Long id) {
+        return repository.findById(id)
+                .map(tipoTrabajo -> {
+                    tipoTrabajo.setActivo(false);
+                    repository.save(tipoTrabajo);
+                    return true;
+                })
+                .orElse(false);
+    }
+
+    public Optional<TipoTrabajo> reactivar(Long id) {
+        return repository.findById(id)
+                .map(tipoTrabajo -> {
+                    tipoTrabajo.setActivo(true);
+                    return repository.save(tipoTrabajo);
+                });
     }
 
 

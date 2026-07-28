@@ -53,12 +53,25 @@ public class TipoTrabajoController {
 
     }
 
+    @GetMapping("/inactivos")
+    public List<TipoTrabajo> obtenerInactivos() {
+        return service.obtenerInactivos();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         if(service.eliminar(id)) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+
+    @PutMapping("/{id}/reactivar")
+    public ResponseEntity<TipoTrabajo> reactivar(@PathVariable Long id) {
+        return service.reactivar(id)
+                .map(tipoTrabajo -> ResponseEntity.ok(tipoTrabajo))
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

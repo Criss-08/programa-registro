@@ -21,6 +21,8 @@ public class TipoTrabajo {
     @DecimalMin(value = "0.0", inclusive = true, message = "El precio base no puede ser negativo")
     private BigDecimal precioBase;
 
+    private Boolean activo = true;
+
     public TipoTrabajo(){
 
     }
@@ -47,5 +49,13 @@ public class TipoTrabajo {
 
     public void setPrecioBase(BigDecimal precioBase) {
         this.precioBase = precioBase;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
     }
 }
