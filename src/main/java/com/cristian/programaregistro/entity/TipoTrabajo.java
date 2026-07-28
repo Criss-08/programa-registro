@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.DecimalMin;
+import java.math.BigDecimal;
 
 @Entity
 public class TipoTrabajo {
@@ -15,6 +17,9 @@ public class TipoTrabajo {
 
     @NotBlank(message = "El nombre del tipo de trabajo es Obligatorio")
     private String nombre;
+
+    @DecimalMin(value = "0.0", inclusive = true, message = "El precio base no puede ser negativo")
+    private BigDecimal precioBase;
 
     public TipoTrabajo(){
 
@@ -36,7 +41,11 @@ public class TipoTrabajo {
         this.nombre = nombre;
     }
 
+    public BigDecimal getPrecioBase() {
+        return precioBase;
+    }
 
-
-
+    public void setPrecioBase(BigDecimal precioBase) {
+        this.precioBase = precioBase;
+    }
 }

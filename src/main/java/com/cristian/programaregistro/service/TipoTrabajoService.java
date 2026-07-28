@@ -32,6 +32,7 @@ public class TipoTrabajoService {
         return repository.findById(id)
                 .map(tipoTrabajoExistente -> {
                     tipoTrabajoExistente.setNombre(tipoTrabajoActualizado.getNombre());
+                    tipoTrabajoExistente.setPrecioBase(tipoTrabajoActualizado.getPrecioBase());
                     return repository.save(tipoTrabajoExistente);
                 });
     }
