@@ -73,6 +73,7 @@ public class DetalleTrabajoService {
         TipoTrabajo tipoTrabajo = tipoTrabajoOptional.get();
 
         validarTrabajoActivo(trabajo);
+        completarPrecioUnitarioSiFalta(detalleTrabajo, tipoTrabajo);
         calcularSubtotal(detalleTrabajo);
 
         detalleTrabajo.setTrabajo(trabajo);
@@ -117,6 +118,7 @@ public class DetalleTrabajoService {
         detalleTrabajoExistente.setTrabajo(trabajo);
         detalleTrabajoExistente.setTipoTrabajo(tipoTrabajo);
 
+        completarPrecioUnitarioSiFalta(detalleTrabajoExistente, tipoTrabajo);
         calcularSubtotal(detalleTrabajoExistente);
 
         return Optional.of(detalleTrabajoRepository.save(detalleTrabajoExistente));
@@ -196,7 +198,17 @@ public class DetalleTrabajoService {
         }
     }
 
+    private void completarPrecioUnitarioSiFalta(DetalleTrabajo detalleTrabajo, TipoTrabajo tipoTrabajo) {
+        if (detalleTrabajo.getPrecioUnitario() == null) {
+            detalleTrabajo.setPrecioUnitario(tipoTrabajo.getPrecioBase());
+        }
+    }
+
     private void calcularSubtotal(DetalleTrabajo detalleTrabajo) {
+        if (detalleTrabajo.getPrecioUnitario() == null) {
+            throw new ReglaNegocioException("El precio unitario es obligatorio si el tipo de trabajo no tiene precio base");
+        }
+
         BigDecimal subtotal = detalleTrabajo.getPrecioUnitario()
                 .multiply(BigDecimal.valueOf(detalleTrabajo.getCantidad()));
 

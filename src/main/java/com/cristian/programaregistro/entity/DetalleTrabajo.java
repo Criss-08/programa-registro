@@ -23,7 +23,6 @@ public class DetalleTrabajo {
     @Min(value = 1, message = "La cantidad debe ser mayor a 0")
     private Integer cantidad;
 
-    @NotNull(message = "El precio unitario es obligatorio")
     @DecimalMin(value = "0.0", inclusive = true, message = "El precio unitario no puede ser negativo")
     private BigDecimal precioUnitario;
 
