@@ -17,7 +17,11 @@ public class EstadoTrabajoService {
     }
 
     public List<EstadoTrabajo> obtenerTodos() {
-        return repository.findAll();
+        return repository.findByActivoTrue();
+    }
+
+    public List<EstadoTrabajo> obtenerInactivos() {
+        return repository.findByActivoFalse();
     }
 
     public EstadoTrabajo guardar(EstadoTrabajo estado){
@@ -28,20 +32,31 @@ public class EstadoTrabajoService {
         return repository.findById(id);
     }
 
-    public Optional<EstadoTrabajo> actualizar(Long id, EstadoTrabajo estadoActualizado){
+    public Optional<EstadoTrabajo> actualizar(Long id, EstadoTrabajo estadoActualizado) {
         return repository.findById(id)
-                .map(estadoExiste -> {
-                    estadoExiste.setNombre(estadoActualizado.getNombre());
-                    return repository.save(estadoExiste);
+                .map(estadoExistente -> {
+                    estadoExistente.setNombre(estadoActualizado.getNombre());
+                    estadoExistente.setActivo(estadoActualizado.getActivo());
+                    return repository.save(estadoExistente);
                 });
     }
 
-    public boolean eliminar(Long id){
-        if (repository.existsById(id)){
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
+    public boolean eliminar(Long id) {
+        return repository.findById(id)
+                .map(estado -> {
+                    estado.setActivo(false);
+                    repository.save(estado);
+                    return true;
+                })
+                .orElse(false);
+    }
+
+    public Optional<EstadoTrabajo> reactivar(Long id) {
+        return repository.findById(id)
+                .map(estado -> {
+                    estado.setActivo(true);
+                    return repository.save(estado);
+                });
     }
 
 }

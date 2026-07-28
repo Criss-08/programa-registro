@@ -31,6 +31,11 @@ public class EstadoTrabajoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(estadoGuardado);
     }
 
+    @GetMapping("/inactivos")
+    public List<EstadoTrabajo> obtenerInactivos() {
+        return service.obtenerInactivos();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<EstadoTrabajo> obtenerPorId(@PathVariable Long id){
         return service.obtenerPorId(id)
@@ -57,6 +62,12 @@ public class EstadoTrabajoController {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("/{id}/reactivar")
+    public ResponseEntity<EstadoTrabajo> reactivar(@PathVariable Long id) {
+        return service.reactivar(id)
+                .map(estado -> ResponseEntity.ok(estado))
+                .orElse(ResponseEntity.notFound().build());
+    }
 
 
 }

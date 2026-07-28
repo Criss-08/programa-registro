@@ -17,6 +17,8 @@ public class EstadoTrabajo {
     @NotBlank(message = "El nombre del estado es oblicagotio")
     private String nombre;
 
+    private Boolean activo = true;
+
     //Constructor
     public EstadoTrabajo(){
 
@@ -32,6 +34,14 @@ public class EstadoTrabajo {
     }
     public void setNombre(String nombre){
         this.nombre = nombre;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
     }
 
 }
