@@ -99,6 +99,12 @@ public class TrabajoService {
         }
     }
 
+    private void validarEstadoTrabajoActivo(EstadoTrabajo estadoTrabajo) {
+        if (!Boolean.TRUE.equals(estadoTrabajo.getActivo())) {
+            throw new ReglaNegocioException("No se puede asociar un trabajo a un estado inactivo");
+        }
+    }
+
     public Optional<Trabajo> guardar(Trabajo trabajo) {
         if (trabajo.getCliente() == null || trabajo.getCliente().getId() == null ||
             trabajo.getPaciente() == null || trabajo.getPaciente().getId() == null ||
@@ -122,7 +128,9 @@ public class TrabajoService {
         Cliente cliente = clienteOptional.get();
         Paciente paciente = pacienteOptional.get();
         EstadoTrabajo estadoTrabajo = estadoTrabajoOptional.get();
+
         validarClienteYPacienteActivos(cliente, paciente);
+        validarEstadoTrabajoActivo(estadoTrabajo);
 
         if (!pacientePerteneceAlCliente(paciente, cliente)) {
             throw new ReglaNegocioException("El paciente no pertenece al cliente indicado");
@@ -161,7 +169,9 @@ public class TrabajoService {
         Cliente cliente = clienteOptional.get();
         Paciente paciente = pacienteOptional.get();
         EstadoTrabajo estadoTrabajo = estadoTrabajoOptional.get();
+
         validarClienteYPacienteActivos(cliente,paciente);
+        validarEstadoTrabajoActivo(estadoTrabajo);
 
         if (!pacientePerteneceAlCliente(paciente, cliente)) {
             throw  new ReglaNegocioException("El paciente no pertenece al cliente indicado");
