@@ -73,6 +73,7 @@ public class DetalleTrabajoService {
         TipoTrabajo tipoTrabajo = tipoTrabajoOptional.get();
 
         validarTrabajoActivo(trabajo);
+        validarTipoTrabajoActivo(tipoTrabajo);
         completarPrecioUnitarioSiFalta(detalleTrabajo, tipoTrabajo);
         calcularSubtotal(detalleTrabajo);
 
@@ -107,6 +108,7 @@ public class DetalleTrabajoService {
         TipoTrabajo tipoTrabajo = tipoTrabajoOptional.get();
 
         validarTrabajoActivo(trabajo);
+        validarTipoTrabajoActivo(tipoTrabajo);
 
         DetalleTrabajo detalleTrabajoExistente = detalleTrabajoOptional.get();
 
@@ -195,6 +197,12 @@ public class DetalleTrabajoService {
     private void validarTrabajoActivo(Trabajo trabajo) {
         if (!Boolean.TRUE.equals(trabajo.getActivo())) {
             throw new ReglaNegocioException("No se puede asociar un detalle a un trabajo inactivo");
+        }
+    }
+
+    private void validarTipoTrabajoActivo(TipoTrabajo tipoTrabajo) {
+        if (!Boolean.TRUE.equals(tipoTrabajo.getActivo())) {
+            throw new ReglaNegocioException("No se puede asociar un detalle a un tipo de trabajo inactivo");
         }
     }
 
