@@ -66,6 +66,7 @@ public class ResumenFacturacionService {
         if (resumenFacturacion.getEstadoResumen() == null || resumenFacturacion.getEstadoResumen().isBlank()) {
             resumenFacturacion.setEstadoResumen("ABIERTO");
         }
+        validarEstadoResumen(resumenFacturacion.getEstadoResumen());
 
         return Optional.of(resumenFacturacionRepository.save(resumenFacturacion));
     }
@@ -90,6 +91,8 @@ public class ResumenFacturacionService {
         validarClienteActivo(cliente);
 
         ResumenFacturacion resumenExistente = resumenOptional.get();
+
+        validarEstadoResumen(resumenActualizado.getEstadoResumen());
 
         resumenExistente.setFechaEmision(resumenActualizado.getFechaEmision());
         resumenExistente.setTotal(resumenActualizado.getTotal());
@@ -122,6 +125,17 @@ public class ResumenFacturacionService {
     private void validarClienteActivo(Cliente cliente) {
         if (!Boolean.TRUE.equals(cliente.getActivo())) {
             throw new ReglaNegocioException("No se puede asociar un resumen a un cliente inactivo");
+        }
+    }
+
+    private void validarEstadoResumen(String estadoResumen) {
+        if (
+                !estadoResumen.equals("ABIERTO") &&
+                        !estadoResumen.equals("CONFIRMADO") &&
+                        !estadoResumen.equals("CERRADO") &&
+                        !estadoResumen.equals("ANULADO")
+        ) {
+            throw new ReglaNegocioException("El estado del resumen no es valido");
         }
     }
 }
