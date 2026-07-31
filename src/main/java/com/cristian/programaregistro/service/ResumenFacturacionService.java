@@ -59,9 +59,7 @@ public class ResumenFacturacionService {
 
         resumenFacturacion.setCliente(cliente);
 
-        if (resumenFacturacion.getTotal() == null) {
-            resumenFacturacion.setTotal(BigDecimal.ZERO);
-        }
+        resumenFacturacion.setTotal(BigDecimal.ZERO);
 
         if (resumenFacturacion.getEstadoResumen() == null || resumenFacturacion.getEstadoResumen().isBlank()) {
             resumenFacturacion.setEstadoResumen("ABIERTO");
@@ -95,7 +93,6 @@ public class ResumenFacturacionService {
         validarEstadoResumen(resumenActualizado.getEstadoResumen());
 
         resumenExistente.setFechaEmision(resumenActualizado.getFechaEmision());
-        resumenExistente.setTotal(resumenActualizado.getTotal());
         resumenExistente.setEstadoResumen(resumenActualizado.getEstadoResumen());
         resumenExistente.setObservaciones(resumenActualizado.getObservaciones());
         resumenExistente.setActivo(resumenActualizado.getActivo());

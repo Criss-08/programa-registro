@@ -89,6 +89,7 @@ public class DetalleResumenService {
         detalleResumen.setResumenFacturacion(resumen);
         detalleResumen.setTrabajo(trabajo);
         detalleResumen.setSubtotalTrabajo(subtotalTrabajo);
+        detalleResumen.setActivo(true);
 
         DetalleResumen detalleGuardado = detalleResumenRepository.save(detalleResumen);
 
@@ -114,9 +115,6 @@ public class DetalleResumenService {
         detalleExistente.setSubtotalTrabajo(subtotalTrabajo);
         detalleExistente.setObservaciones(detalleResumenActualizado.getObservaciones());
 
-        if (detalleResumenActualizado.getActivo() != null) {
-            detalleExistente.setActivo(detalleResumenActualizado.getActivo());
-        }
 
         DetalleResumen detalleGuardado = detalleResumenRepository.save(detalleExistente);
 
@@ -222,4 +220,6 @@ public class DetalleResumenService {
         resumen.setTotal(total);
         resumenFacturacionRepository.save(resumen);
     }
+
+
 }
