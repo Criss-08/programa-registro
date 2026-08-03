@@ -16,4 +16,6 @@ public interface DetalleResumenRepository extends JpaRepository<DetalleResumen, 
     List<DetalleResumen> findByTrabajoIdAndActivoTrue(Long trabajoId);
 
     boolean existsByTrabajoIdAndActivoTrue(Long trabajoId);
+
+    boolean existsByResumenFacturacionIdAndActivoTrue(Long resumenFacturacionId);
 }

@@ -6,6 +6,7 @@ import com.cristian.programaregistro.exception.ReglaNegocioException;
 import com.cristian.programaregistro.repository.ClienteRepository;
 import com.cristian.programaregistro.repository.ResumenFacturacionRepository;
 import org.springframework.stereotype.Service;
+import com.cristian.programaregistro.repository.DetalleResumenRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,13 +17,17 @@ public class ResumenFacturacionService {
 
     private final ResumenFacturacionRepository resumenFacturacionRepository;
     private final ClienteRepository clienteRepository;
+    private final DetalleResumenRepository detalleResumenRepository;
 
     public ResumenFacturacionService(
             ResumenFacturacionRepository resumenFacturacionRepository,
-            ClienteRepository clienteRepository
+            ClienteRepository clienteRepository,
+            DetalleResumenRepository detalleResumenRepository
     ) {
         this.resumenFacturacionRepository = resumenFacturacionRepository;
         this.clienteRepository = clienteRepository;
+
+        this.detalleResumenRepository = detalleResumenRepository;
     }
 
     public List<ResumenFacturacion> obtenerTodos() {
@@ -90,7 +95,9 @@ public class ResumenFacturacionService {
 
         ResumenFacturacion resumenExistente = resumenOptional.get();
 
+        validarCambioDeCliente(resumenExistente, cliente);
         validarEstadoResumen(resumenActualizado.getEstadoResumen());
+
 
         resumenExistente.setFechaEmision(resumenActualizado.getFechaEmision());
         resumenExistente.setEstadoResumen(resumenActualizado.getEstadoResumen());
@@ -135,4 +142,21 @@ public class ResumenFacturacionService {
             throw new ReglaNegocioException("El estado del resumen no es valido");
         }
     }
+
+    private void validarCambioDeCliente(ResumenFacturacion resumenExistente, Cliente clienteNuevo) {
+        boolean tieneDetallesActivos =
+                detalleResumenRepository.existsByResumenFacturacionIdAndActivoTrue(resumenExistente.getId());
+
+        boolean cambioCliente =
+                !resumenExistente.getCliente().getId().equals(clienteNuevo.getId());
+
+        if (tieneDetallesActivos && cambioCliente) {
+            throw new ReglaNegocioException("No se puede cambiar el cliente de un resumen con trabajos incluidos");
+        }
+    }
+
+
+
+
+
 }
