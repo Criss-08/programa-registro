@@ -102,7 +102,6 @@ public class ResumenFacturacionService {
         resumenExistente.setFechaEmision(resumenActualizado.getFechaEmision());
         resumenExistente.setEstadoResumen(resumenActualizado.getEstadoResumen());
         resumenExistente.setObservaciones(resumenActualizado.getObservaciones());
-        resumenExistente.setActivo(resumenActualizado.getActivo());
         resumenExistente.setCliente(cliente);
 
         return Optional.of(resumenFacturacionRepository.save(resumenExistente));
