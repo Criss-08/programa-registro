@@ -110,6 +110,8 @@ public class ResumenFacturacionService {
     public boolean eliminar(Long id) {
         return resumenFacturacionRepository.findById(id)
                 .map(resumen -> {
+                    validarResumenSinDetallesActivos(resumen);
+
                     resumen.setActivo(false);
                     resumenFacturacionRepository.save(resumen);
                     return true;
@@ -151,6 +153,15 @@ public class ResumenFacturacionService {
 
         if (tieneDetallesActivos && cambioCliente) {
             throw new ReglaNegocioException("No se puede cambiar el cliente de un resumen con trabajos incluidos");
+        }
+    }
+
+    private void validarResumenSinDetallesActivos(ResumenFacturacion resumen) {
+        boolean tieneDetallesActivos =
+                detalleResumenRepository.existsByResumenFacturacionIdAndActivoTrue(resumen.getId());
+
+        if (tieneDetallesActivos) {
+            throw new ReglaNegocioException("No se puede eliminar un resumen con trabajos incluidos");
         }
     }
 
