@@ -132,11 +132,27 @@ public class ResumenFacturacionService {
                 .map(resumen -> {
                     validarResumenActivo(resumen);
 
-                    if (!"ABIERTO".equals(resumen.getEstadoResumen())) {
-                        throw new ReglaNegocioException("Solo se puede cerrar un resumen abierto");
+                    if (!"CONFIRMADO".equals(resumen.getEstadoResumen())) {
+                        throw new ReglaNegocioException("Solo se puede cerrar un resumen confirmado");
                     }
 
                     resumen.setEstadoResumen("CERRADO");
+
+                    return resumenFacturacionRepository.save(resumen);
+                });
+    }
+
+    public Optional<ResumenFacturacion> confirmar(Long id) {
+        return resumenFacturacionRepository.findById(id)
+                .map(resumen -> {
+                    validarResumenActivo(resumen);
+                    validarResumenTieneDetallesActivos(resumen);
+
+                    if (!"ABIERTO".equals(resumen.getEstadoResumen())) {
+                        throw new ReglaNegocioException("Solo se puede confirmar un resumen abierto");
+                    }
+
+                    resumen.setEstadoResumen("CONFIRMADO");
 
                     return resumenFacturacionRepository.save(resumen);
                 });
@@ -183,6 +199,15 @@ public class ResumenFacturacionService {
     private void validarResumenActivo(ResumenFacturacion resumen) {
         if (!Boolean.TRUE.equals(resumen.getActivo())) {
             throw new ReglaNegocioException("No se puede modificar un resumen inactivo");
+        }
+    }
+
+    private void validarResumenTieneDetallesActivos(ResumenFacturacion resumen) {
+        boolean tieneDetallesActivos =
+                detalleResumenRepository.existsByResumenFacturacionIdAndActivoTrue(resumen.getId());
+
+        if (!tieneDetallesActivos) {
+            throw new ReglaNegocioException("No se puede confirmar un resumen sin trabajos incluidos");
         }
     }
 

@@ -81,5 +81,12 @@ public class ResumenFacturacionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/{id}/confirmar")
+    public ResponseEntity<ResumenFacturacion> confirmar(@PathVariable Long id) {
+        return service.confirmar(id)
+                .map(resumen -> ResponseEntity.ok(resumen))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 
 }
