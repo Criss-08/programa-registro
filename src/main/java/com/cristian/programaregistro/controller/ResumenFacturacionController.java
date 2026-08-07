@@ -73,4 +73,13 @@ public class ResumenFacturacionController {
                 .map(resumen -> ResponseEntity.ok(resumen))
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PutMapping("/{id}/cerrar")
+    public ResponseEntity<ResumenFacturacion> cerrar(@PathVariable Long id) {
+        return service.cerrar(id)
+                .map(resumen -> ResponseEntity.ok(resumen))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
 }

@@ -127,6 +127,21 @@ public class ResumenFacturacionService {
                 });
     }
 
+    public Optional<ResumenFacturacion> cerrar(Long id) {
+        return resumenFacturacionRepository.findById(id)
+                .map(resumen -> {
+                    validarResumenActivo(resumen);
+
+                    if (!"ABIERTO".equals(resumen.getEstadoResumen())) {
+                        throw new ReglaNegocioException("Solo se puede cerrar un resumen abierto");
+                    }
+
+                    resumen.setEstadoResumen("CERRADO");
+
+                    return resumenFacturacionRepository.save(resumen);
+                });
+    }
+
     private void validarClienteActivo(Cliente cliente) {
         if (!Boolean.TRUE.equals(cliente.getActivo())) {
             throw new ReglaNegocioException("No se puede asociar un resumen a un cliente inactivo");
@@ -162,6 +177,12 @@ public class ResumenFacturacionService {
 
         if (tieneDetallesActivos) {
             throw new ReglaNegocioException("No se puede eliminar un resumen con trabajos incluidos");
+        }
+    }
+
+    private void validarResumenActivo(ResumenFacturacion resumen) {
+        if (!Boolean.TRUE.equals(resumen.getActivo())) {
+            throw new ReglaNegocioException("No se puede modificar un resumen inactivo");
         }
     }
 
