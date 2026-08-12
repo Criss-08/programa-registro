@@ -158,6 +158,25 @@ public class ResumenFacturacionService {
                 });
     }
 
+    public Optional<ResumenFacturacion> anular(Long id) {
+        return resumenFacturacionRepository.findById(id)
+                .map(resumen -> {
+                    validarResumenActivo(resumen);
+
+                    if ("CERRADO".equals(resumen.getEstadoResumen())) {
+                        throw new ReglaNegocioException("No se puede anular un resumen cerrado");
+                    }
+
+                    if ("ANULADO".equals(resumen.getEstadoResumen())) {
+                        throw new ReglaNegocioException("El resumen ya se encuentra anulado");
+                    }
+
+                    resumen.setEstadoResumen("ANULADO");
+
+                    return resumenFacturacionRepository.save(resumen);
+                });
+    }
+
     private void validarClienteActivo(Cliente cliente) {
         if (!Boolean.TRUE.equals(cliente.getActivo())) {
             throw new ReglaNegocioException("No se puede asociar un resumen a un cliente inactivo");

@@ -88,5 +88,12 @@ public class ResumenFacturacionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/{id}/anular")
+    public ResponseEntity<ResumenFacturacion> anular(@PathVariable Long id) {
+        return service.anular(id)
+                .map(resumen -> ResponseEntity.ok(resumen))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 
 }
