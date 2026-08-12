@@ -96,11 +96,8 @@ public class ResumenFacturacionService {
         ResumenFacturacion resumenExistente = resumenOptional.get();
 
         validarCambioDeCliente(resumenExistente, cliente);
-        validarEstadoResumen(resumenActualizado.getEstadoResumen());
-
 
         resumenExistente.setFechaEmision(resumenActualizado.getFechaEmision());
-        resumenExistente.setEstadoResumen(resumenActualizado.getEstadoResumen());
         resumenExistente.setObservaciones(resumenActualizado.getObservaciones());
         resumenExistente.setCliente(cliente);
 
