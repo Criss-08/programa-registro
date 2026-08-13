@@ -63,13 +63,9 @@ public class ResumenFacturacionService {
         validarClienteActivo(cliente);
 
         resumenFacturacion.setCliente(cliente);
-
         resumenFacturacion.setTotal(BigDecimal.ZERO);
-
-        if (resumenFacturacion.getEstadoResumen() == null || resumenFacturacion.getEstadoResumen().isBlank()) {
-            resumenFacturacion.setEstadoResumen("ABIERTO");
-        }
-        validarEstadoResumen(resumenFacturacion.getEstadoResumen());
+        resumenFacturacion.setActivo(true);
+        resumenFacturacion.setEstadoResumen("ABIERTO");
 
         return Optional.of(resumenFacturacionRepository.save(resumenFacturacion));
     }
